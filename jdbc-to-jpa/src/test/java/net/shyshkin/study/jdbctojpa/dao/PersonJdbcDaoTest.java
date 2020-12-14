@@ -1,10 +1,12 @@
 package net.shyshkin.study.jdbctojpa.dao;
 
 import net.shyshkin.study.jdbctojpa.domain.Person;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,5 +60,55 @@ class PersonJdbcDaoTest {
         //then
         assertThat(count).isEqualTo(1);
 
+    }
+
+    @Test
+    @Disabled
+    void count() {
+        //when
+        Integer count = personJdbcDao.count();
+
+        //then
+        assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    void insertNew() {
+        //given
+        Person person = Person.builder()
+                .id(10003)
+                .name("Nazar")
+                .location("NY")
+                .birthDate(LocalDateTime.now())
+                .build();
+
+        //when
+        int insertCount = personJdbcDao.insertNew(person);
+
+        //then
+        assertThat(insertCount).isEqualTo(1);
+        assertThat(personJdbcDao.count()).isEqualTo(3);
+
+
+    }
+
+    @Test
+    void updatePerson() {
+        //given
+        Person person = Person.builder()
+                .id(10001)
+                .name("Arina")
+                .location("Paris")
+                .birthDate(LocalDateTime.now())
+                .build();
+
+        //when
+        int insertCount = personJdbcDao.updatePerson(person);
+
+        //then
+        assertThat(insertCount).isEqualTo(1);
+        Person updatedPerson = personJdbcDao.findById(10001);
+        assertThat(updatedPerson).isEqualToIgnoringGivenFields(person, "birthDate");
+        assertThat(updatedPerson.getBirthDate()).isEqualToIgnoringNanos(person.getBirthDate());
     }
 }

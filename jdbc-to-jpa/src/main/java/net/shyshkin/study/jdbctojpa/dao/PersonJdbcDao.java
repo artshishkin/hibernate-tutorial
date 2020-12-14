@@ -28,4 +28,20 @@ public class PersonJdbcDao {
     public int deleteById(int id) {
         return jdbcTemplate.update("delete from person where id=?", id);
     }
+
+    public Integer count() {
+        return jdbcTemplate.queryForObject("select count(*) from PERSON", Integer.class);
+    }
+
+    public int insertNew(Person person) {
+        return jdbcTemplate.update("insert into person (id, name, location, birth_date) values (?,?,?,?)",
+                person.getId(), person.getName(), person.getLocation(), person.getBirthDate());
+    }
+
+    public int updatePerson(Person person) {
+        return jdbcTemplate.update("update person set name=?, location=?, birth_date=? where ID=?",
+                person.getName(), person.getLocation(), person.getBirthDate(), person.getId());
+    }
+
+
 }
