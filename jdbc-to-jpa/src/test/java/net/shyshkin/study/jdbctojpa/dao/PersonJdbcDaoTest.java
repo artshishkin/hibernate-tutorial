@@ -46,4 +46,17 @@ class PersonJdbcDaoTest {
         assertThat(person.getName()).isEqualTo("Art");
 
     }
+
+    @Test
+    void deleteById() {
+        //given
+        int id = 10001;
+
+        //when
+        int count = personJdbcDao.deleteById(id);
+
+        //then
+        assertThat(count).isEqualTo(1);
+
+    }
 }
