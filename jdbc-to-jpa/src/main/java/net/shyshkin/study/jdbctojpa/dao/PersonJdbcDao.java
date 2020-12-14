@@ -20,15 +20,8 @@ public class PersonJdbcDao {
         return jdbcTemplate.query("select * from person", BeanPropertyRowMapper.newInstance(Person.class));
     }
 
-    //select * from person;
-    public List<Person> findAllMy() {
-
-        return jdbcTemplate.query("select * from person", (rs, rowNum) -> Person.builder()
-                .id(rs.getInt("id"))
-                .name(rs.getString("name"))
-                .location(rs.getString("location"))
-                .birthDate(rs.getTimestamp("birth_date").toLocalDateTime())
-                .build());
+    public Person findById(int id) {
+        return jdbcTemplate.queryForObject("select * from person where id=?",
+                BeanPropertyRowMapper.newInstance(Person.class), id);
     }
-
 }

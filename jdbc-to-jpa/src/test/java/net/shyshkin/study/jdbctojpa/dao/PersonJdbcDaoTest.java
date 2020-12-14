@@ -30,4 +30,20 @@ class PersonJdbcDaoTest {
         );
 
     }
+
+    @Test
+    void findById() {
+        //given
+        int id = 10001;
+
+        //when
+        Person person = personJdbcDao.findById(id);
+
+        //then
+        assertThat(person).isNotNull();
+        assertThat(person).hasNoNullFieldsOrProperties();
+        assertThat(person.getId()).isEqualTo(id);
+        assertThat(person.getName()).isEqualTo("Art");
+
+    }
 }
