@@ -1,13 +1,10 @@
 package net.shyshkin.study.jdbctojpa.dao;
 
 import net.shyshkin.study.jdbctojpa.domain.Person;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,16 +12,14 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
-@ActiveProfiles("jdbcDaoSpringBootTest")
-@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
-class PersonJdbcDaoTest {
+@JdbcTest
+@ComponentScan
+class PersonJdbcDaoJdbcTest {
 
     @Autowired
     PersonJdbcDao personJdbcDao;
 
     @Test
-    @Order(5)
     void findAll() {
         //when
         List<Person> personList = personJdbcDao.findAll();
@@ -40,7 +35,6 @@ class PersonJdbcDaoTest {
     }
 
     @Test
-    @Order(10)
     void findById() {
         //given
         int id = 10001;
@@ -57,7 +51,6 @@ class PersonJdbcDaoTest {
     }
 
     @Test
-    @Order(105)
     void deleteById() {
         //given
         int id = 10001;
@@ -71,7 +64,6 @@ class PersonJdbcDaoTest {
     }
 
     @Test
-    @Order(20)
     void count() {
         //when
         Integer count = personJdbcDao.count();
@@ -81,7 +73,6 @@ class PersonJdbcDaoTest {
     }
 
     @Test
-    @Order(25)
     void insertNew() {
         //given
         Person person = Person.builder()
@@ -102,7 +93,6 @@ class PersonJdbcDaoTest {
     }
 
     @Test
-    @Order(30)
     void updatePerson() {
         //given
         Person person = Person.builder()
@@ -121,4 +111,14 @@ class PersonJdbcDaoTest {
         assertThat(updatedPerson).isEqualToIgnoringGivenFields(person, "birthDate");
         assertThat(updatedPerson.getBirthDate()).isEqualToIgnoringNanos(person.getBirthDate());
     }
+
+//    @TestConfiguration
+//    static class Config {
+//
+//        @Bean
+//        public PersonJdbcDao personJdbcDao(JdbcTemplate jdbcTemplate) {
+//            return new PersonJdbcDao(jdbcTemplate);
+//        }
+//    }
+
 }
