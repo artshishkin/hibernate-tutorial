@@ -17,4 +17,13 @@ public class PersonRepository {
     public Person findById(int id) {
         return entityManager.find(Person.class, id);
     }
+
+    public Person insertNew(Person person) {
+        person.setId(null);
+        return entityManager.merge(person);
+    }
+
+    public Person updatePerson(Person person) {
+        return entityManager.merge(person);
+    }
 }
