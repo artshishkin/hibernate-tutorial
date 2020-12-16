@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,6 +21,17 @@ class PersonRepositoryTest {
 
     @Autowired
     TestEntityManager testEntityManager;
+
+    @Test
+    void findAll() {
+
+        //when
+        List<Person> personList = personRepository.findAll();
+
+        //then
+        assertThat(personList).isNotNull().hasSize(2);
+
+    }
 
     @Test
     void findById() {

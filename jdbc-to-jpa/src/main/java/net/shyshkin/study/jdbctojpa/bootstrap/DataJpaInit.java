@@ -36,5 +36,7 @@ public class DataJpaInit implements CommandLineRunner {
                         .location("Paris")
                         .birthDate(LocalDateTime.now())
                         .build());
+        personRepository.findAll()
+                .forEach(person -> log.debug("{}", person));
     }
 }
