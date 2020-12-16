@@ -73,6 +73,17 @@ class PersonRepositoryTest {
         assertThat(personRepository.findById(10001).getName()).isEqualTo("Tanya");
     }
 
+    @Test
+    void deleteById() {
+
+        //when
+        personRepository.deleteById(10001);
+
+        //then
+        syncDB();
+        assertThat(personRepository.findById(10001)).isNull();
+    }
+
     private void syncDB() {
         // forces synchronization to DB
         testEntityManager.flush();
