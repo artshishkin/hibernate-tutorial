@@ -4,6 +4,7 @@ import net.shyshkin.study.jdbctojpa.domain.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,9 @@ class PersonRepositoryTest {
 
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    TestEntityManager testEntityManager;
 
     @Test
     void findById() {
@@ -44,6 +48,7 @@ class PersonRepositoryTest {
         Person insertedPerson = personRepository.insertNew(person);
 
         //then
+        syncDB();
         assertThat(insertedPerson).isEqualToIgnoringGivenFields(person, "id");
         assertThat(insertedPerson).hasNoNullFieldsOrProperties();
         assertThat(personRepository.findById(insertedPerson.getId()).getName()).isEqualTo("Tanya");
@@ -63,7 +68,16 @@ class PersonRepositoryTest {
         Person updatePerson = personRepository.updatePerson(person);
 
         //then
+        syncDB();
         assertThat(updatePerson).isEqualTo(person);
         assertThat(personRepository.findById(10001).getName()).isEqualTo("Tanya");
+    }
+
+    private void syncDB() {
+        // forces synchronization to DB
+        testEntityManager.flush();
+        // clears persistence context
+        // all entities are now detached and can be fetched again
+        testEntityManager.clear();
     }
 }

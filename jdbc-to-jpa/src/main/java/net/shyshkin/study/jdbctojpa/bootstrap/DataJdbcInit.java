@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 @Profile("!jdbcDaoSpringBootTest")
-public class DataInit implements CommandLineRunner {
+public class DataJdbcInit implements CommandLineRunner {
 
     private final PersonJdbcDao personJdbcDao;
 
