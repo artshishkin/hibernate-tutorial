@@ -16,10 +16,16 @@ public class PersonRepository {
     @PersistenceContext
     EntityManager entityManager;
 
-    public List<Person> findAll() {
+    public List<Person> findAllNamed() {
 
         TypedQuery<Person> namedQuery = entityManager.createNamedQuery("find_all_persons", Person.class);
         return namedQuery.getResultList();
+    }
+
+    public List<Person> findAll() {
+
+        TypedQuery<Person> jpqlQuery = entityManager.createQuery("select p from Person p", Person.class);
+        return jpqlQuery.getResultList();
     }
 
     public Person findById(int id) {

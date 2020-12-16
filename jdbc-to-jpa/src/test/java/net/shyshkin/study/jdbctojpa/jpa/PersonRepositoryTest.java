@@ -34,6 +34,17 @@ class PersonRepositoryTest {
     }
 
     @Test
+    void findAllNamed() {
+
+        //when
+        List<Person> personList = personRepository.findAllNamed();
+
+        //then
+        assertThat(personList).isNotNull().hasSize(2);
+
+    }
+
+    @Test
     void findById() {
         //given
         int id = 10001;
