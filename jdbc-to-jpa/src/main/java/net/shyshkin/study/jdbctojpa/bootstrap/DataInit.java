@@ -2,8 +2,8 @@ package net.shyshkin.study.jdbctojpa.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.shyshkin.study.jdbctojpa.dao.PersonJdbcDao;
 import net.shyshkin.study.jdbctojpa.domain.Person;
+import net.shyshkin.study.jdbctojpa.jdbc.PersonJdbcDao;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

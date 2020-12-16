@@ -1,4 +1,4 @@
-package net.shyshkin.study.jdbctojpa.dao;
+package net.shyshkin.study.jdbctojpa.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import net.shyshkin.study.jdbctojpa.domain.Person;
