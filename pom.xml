@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>jdbc-to-jpa</module>
+        <module>jpa-hibernate</module>
     </modules>
 
 
