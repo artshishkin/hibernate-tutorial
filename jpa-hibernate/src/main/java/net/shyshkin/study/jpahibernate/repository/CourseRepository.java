@@ -33,4 +33,11 @@ public class CourseRepository {
 
         return course;
     }
+
+    @Transactional
+    public void playWithEntityManager(){
+        Course course = new Course("Play course");
+        em.persist(course);
+        course.setName("Updated course");
+    }
 }

@@ -83,4 +83,10 @@ class CourseRepositoryTest {
         testEntityManager.flush();
         testEntityManager.clear();
     }
+
+    @Test
+    void playWithEntityManager() {
+        courseRepository.playWithEntityManager();
+        syncDB();
+    }
 }
