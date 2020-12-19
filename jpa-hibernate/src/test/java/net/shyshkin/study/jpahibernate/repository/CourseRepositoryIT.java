@@ -45,4 +45,39 @@ class CourseRepositoryIT {
         //then
         assertThat(courseRepository.findById(id)).isNull();
     }
+
+    @Test
+    @DirtiesContext
+    void saveInsert() {
+        //given
+        Course course = new Course("New Course");
+
+        //when
+        Course savedCourse = courseRepository.save(course);
+
+        //then
+        assertThat(savedCourse)
+                .hasNoNullFieldsOrProperties()
+                .hasFieldOrPropertyWithValue("name", "New Course");
+    }
+
+    @Test
+    @DirtiesContext
+    void saveUpdate() {
+        //given
+        Course course = courseRepository.findById(10001L);
+        course.setName("Updated Course");
+
+        //when
+        Course savedCourse = courseRepository.save(course);
+
+        //then
+        assertThat(savedCourse)
+                .hasNoNullFieldsOrProperties()
+                .hasFieldOrPropertyWithValue("name", "Updated Course")
+                .hasFieldOrPropertyWithValue("id", 10001L);
+    }
+
+
+
 }

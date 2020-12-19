@@ -46,6 +46,39 @@ class CourseRepositoryTest {
         assertThat(courseRepository.findById(id)).isNull();
     }
 
+    @Test
+    void saveInsert() {
+        //given
+        Course course = new Course("New Course");
+
+        //when
+        Course savedCourse = courseRepository.save(course);
+
+        //then
+        syncDB();
+        assertThat(savedCourse)
+                .hasNoNullFieldsOrProperties()
+                .hasFieldOrPropertyWithValue("name", "New Course");
+    }
+
+    @Test
+    void saveUpdate() {
+        //given
+        Course course = courseRepository.findById(10001L);
+        course.setName("Updated Course");
+
+        //when
+        Course savedCourse = courseRepository.save(course);
+
+        //then
+        syncDB();
+        assertThat(savedCourse)
+                .hasNoNullFieldsOrProperties()
+                .hasFieldOrPropertyWithValue("name", "Updated Course")
+                .hasFieldOrPropertyWithValue("id", 10001L);
+    }
+
+
     private void syncDB() {
         testEntityManager.flush();
         testEntityManager.clear();
