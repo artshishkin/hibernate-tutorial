@@ -1,23 +1,22 @@
 package net.shyshkin.study.jpahibernate.repository;
 
 import net.shyshkin.study.jpahibernate.entity.Course;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
+@SpringBootTest
 @ComponentScan
-class CourseRepositoryTest {
+class CourseRepositoryIT {
 
     @Autowired
     CourseRepository courseRepository;
-
-    @Autowired
-    TestEntityManager testEntityManager;
 
     @Test
     void findById() {
@@ -33,7 +32,9 @@ class CourseRepositoryTest {
                 .hasFieldOrPropertyWithValue("name", "Spring Boot");
     }
 
-    @Test
+    @RepeatedTest(3)
+    @DirtiesContext
+    @DisplayName("After executing deleteById() we should clean dirty context")
     void deleteById() {
         //given
         Long id = 10001L;
@@ -42,12 +43,6 @@ class CourseRepositoryTest {
         courseRepository.deleteById(id);
 
         //then
-        syncDB();
         assertThat(courseRepository.findById(id)).isNull();
-    }
-
-    private void syncDB() {
-        testEntityManager.flush();
-        testEntityManager.clear();
     }
 }
