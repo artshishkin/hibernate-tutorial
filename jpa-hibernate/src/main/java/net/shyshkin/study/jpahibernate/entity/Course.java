@@ -2,13 +2,10 @@ package net.shyshkin.study.jpahibernate.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "CourseDetails")
+@Table(name = "Course")
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course {
@@ -20,6 +17,7 @@ public class Course {
 
     @Getter
     @Setter
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Course(String name) {
