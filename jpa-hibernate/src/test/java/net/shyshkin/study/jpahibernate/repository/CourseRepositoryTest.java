@@ -85,8 +85,14 @@ class CourseRepositoryTest {
     }
 
     @Test
-    void playWithEntityManager() {
-        courseRepository.playWithEntityManager();
+    void playWithEntityManagerDetach() {
+        courseRepository.playWithEntityManagerDetach();
+        syncDB();
+    }
+
+    @Test
+    void playWithEntityManagerClear() {
+        courseRepository.playWithEntityManagerClear();
         syncDB();
     }
 }
