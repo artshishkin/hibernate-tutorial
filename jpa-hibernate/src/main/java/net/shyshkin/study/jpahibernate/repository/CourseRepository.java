@@ -63,4 +63,20 @@ public class CourseRepository {
         course2.setName("Updated course 2");
         em.flush();
     }
+
+    @Transactional
+    public void playWithEntityManagerRefresh(){
+        Course course1 = new Course("Play course 1");
+        em.persist(course1);
+        Course course2 = new Course("Play course 2");
+        em.persist(course2);
+
+        em.flush();
+
+        course1.setName("Updated course 1");
+        course2.setName("Updated course 2");
+
+        em.refresh(course2);
+        em.flush();
+    }
 }

@@ -115,6 +115,19 @@ class CourseRepositoryTest {
         );
     }
 
+    @Test
+    @DisplayName("Refresh the state of the instance from the database, overwriting changes made to the entity, if any.")
+    void playWithEntityManagerRefresh() {
+        courseRepository.playWithEntityManagerRefresh();
+        syncDB();
+        assertAll(
+                () -> assertThat(countCoursesByName("Play course 1")).isEqualTo(0L),
+                () -> assertThat(countCoursesByName("Play course 2")).isEqualTo(1L),
+                () -> assertThat(countCoursesByName("Updated course 1")).isEqualTo(1L),
+                () -> assertThat(countCoursesByName("Updated course 2")).isEqualTo(0L)
+        );
+    }
+
     private Long countCoursesByName(String name) {
         EntityManager entityManager = testEntityManager.getEntityManager();
         TypedQuery<Long> typedQuery = entityManager.createQuery("select count(c) from Course c where c.name = '" + name + "'", Long.class);
