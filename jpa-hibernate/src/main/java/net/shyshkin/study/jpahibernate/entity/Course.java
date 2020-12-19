@@ -1,8 +1,11 @@
 package net.shyshkin.study.jpahibernate.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Course")
@@ -19,6 +22,15 @@ public class Course {
     @Setter
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Getter
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @Getter
+    @Setter
+    @UpdateTimestamp
+    private LocalDateTime lastUpdatedDate;
 
     public Course(String name) {
         this.name = name;
