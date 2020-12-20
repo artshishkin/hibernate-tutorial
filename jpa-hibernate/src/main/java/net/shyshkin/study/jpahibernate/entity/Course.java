@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedQueries({
         @NamedQuery(name = "query_all_courses", query = "select c from Course c"),
-        @NamedQuery(name = "query_courses_like_hiberNATE", query = "select c from Course c where c.name like '%nate'")})
+        @NamedQuery(name = "query_courses_like_hiberNATE", query = "select c from Course c where c.name like :namePart")})
 public class Course {
 
     @Id

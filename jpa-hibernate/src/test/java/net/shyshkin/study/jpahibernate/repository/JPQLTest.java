@@ -55,7 +55,8 @@ class JPQLTest {
     void find_where() {
         //when
 //        TypedQuery<Course> typedQuery = em.createNamedQuery("select c from Course c where c.name like '%nate'", Course.class);
-        TypedQuery<Course> typedQuery = em.createNamedQuery("query_courses_like_hiberNATE", Course.class);
+        TypedQuery<Course> typedQuery = em.createNamedQuery("query_courses_like_hiberNATE", Course.class)
+                .setParameter("namePart", "%nate");
         List<Course> courses = typedQuery.getResultList();
 
 
@@ -66,7 +67,7 @@ class JPQLTest {
                 .allSatisfy(course ->
                         assertThat(course)
                                 .hasNoNullFieldsOrProperties()
-                                .hasFieldOrPropertyWithValue("name","Hibernate"));
+                                .hasFieldOrPropertyWithValue("name", "Hibernate"));
     }
 
     private void syncDB() {
