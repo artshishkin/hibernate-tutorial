@@ -25,7 +25,8 @@ class JPQLTest {
     @Test
     void findAll_basic() {
         //when
-        Query query = em.createQuery("select c from Course c");
+//        Query query = em.createQuery("select c from Course c");
+        Query query = em.createNamedQuery("query_all_courses");
         List courses = query.getResultList();
 
 
@@ -38,7 +39,8 @@ class JPQLTest {
     @Test
     void findAll_typed() {
         //when
-        TypedQuery<Course> typedQuery = em.createQuery("select c from Course c", Course.class);
+//        TypedQuery<Course> typedQuery = em.createQuery("select c from Course c", Course.class);
+        TypedQuery<Course> typedQuery = em.createNamedQuery("query_all_courses", Course.class);
         List<Course> courses = typedQuery.getResultList();
 
 
@@ -52,7 +54,8 @@ class JPQLTest {
     @Test
     void find_where() {
         //when
-        TypedQuery<Course> typedQuery = em.createQuery("select c from Course c where c.name like '%nate'", Course.class);
+//        TypedQuery<Course> typedQuery = em.createNamedQuery("select c from Course c where c.name like '%nate'", Course.class);
+        TypedQuery<Course> typedQuery = em.createNamedQuery("query_courses_like_hiberNATE", Course.class);
         List<Course> courses = typedQuery.getResultList();
 
 

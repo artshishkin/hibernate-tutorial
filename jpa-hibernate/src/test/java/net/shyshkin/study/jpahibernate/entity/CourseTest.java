@@ -9,8 +9,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -57,5 +60,21 @@ class CourseTest {
         log.info("{}", courseUpdated);
         assertThat(courseUpdated.getLastUpdatedDate())
                 .isAfterOrEqualTo(courseUpdated.getCreatedDate().plus(200, ChronoUnit.MILLIS));
+    }
+
+    @Test
+    void namedQuery() {
+        //given
+        EntityManager entityManager = this.entityManager.getEntityManager();
+
+        //when
+        TypedQuery<Course> allCourses = entityManager.createNamedQuery("query_all_courses", Course.class);
+        List<Course> courseList = allCourses.getResultList();
+
+        //then
+        assertThat(courseList)
+                .hasSize(2)
+                .allSatisfy(course -> log.info("{}", course))
+                .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
 }
