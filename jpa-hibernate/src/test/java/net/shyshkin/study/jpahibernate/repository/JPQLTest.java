@@ -70,6 +70,16 @@ class JPQLTest {
                                 .hasFieldOrPropertyWithValue("name", "Hibernate"));
     }
 
+    @Test
+    void jpql_queries_update() {
+        //when
+        Query query = em.createQuery("update Course c set c.lastUpdatedDate=current_timestamp");
+        int noOfROwsUpdated = query.executeUpdate();
+
+        //then
+        assertThat(noOfROwsUpdated).isEqualTo(2);
+    }
+
     private void syncDB() {
         em.flush();
         em.clear();
