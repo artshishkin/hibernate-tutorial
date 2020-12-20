@@ -15,8 +15,6 @@ public class CourseInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.debug("Start bootstrap course repository");
-        courseRepository.playWithEntityManagerDetach();
-        log.debug("Finish bootstrap course repository");
+        
     }
 }
