@@ -102,4 +102,21 @@ class StudentRepositorySpringBootTest {
                 .isNotNull()
                 .hasNoNullFieldsOrProperties();
     }
+
+    //Session & SessionFactory
+    //EntityManager & Persistence Context
+    //Transaction
+    @Test
+    @DirtiesContext
+    void persistenceContextTest() {
+        //given
+        Long id = 20001L;
+
+        //when
+        studentRepository.someOperationToUnderstandPersistenceContext();
+
+        //then
+        Student student = em.find(Student.class, id);
+        assertThat(student.getName()).isEqualTo("Buzz Bar");
+    }
 }

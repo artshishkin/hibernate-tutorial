@@ -44,4 +44,19 @@ public class StudentRepository {
         student.setPassport(passport);
         em.persist(student);
     }
+
+    @Transactional
+    public void someOperationToUnderstandPersistenceContext(){
+        Student student = em.find(Student.class, 20001L);
+        //Persistence context (student)
+
+        Passport passport = student.getPassport();
+        //Persistence context (student, passport)
+
+        passport.setNumber("Foo123");
+        //Persistence context (student, passport++)
+
+        student.setName("Buzz Bar");
+        //Persistence context (student++, passport++)
+    }
 }
