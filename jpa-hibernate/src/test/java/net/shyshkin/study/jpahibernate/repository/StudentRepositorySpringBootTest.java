@@ -5,26 +5,28 @@ import net.shyshkin.study.jpahibernate.entity.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@DataJpaTest
-@ComponentScan
-class StudentRepositoryTest {
+@SpringBootTest
+@ActiveProfiles("spring_boot_test")
+class StudentRepositorySpringBootTest {
 
     @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
-    TestEntityManager tem;
+    EntityManager em;
 
     @Test
+    @DirtiesContext
     void createStudentWithPassport() {
         //given
         String expectedNumber = "ABC123";
@@ -34,16 +36,13 @@ class StudentRepositoryTest {
         studentRepository.createStudentWithPassport();
 
         //then
-        TypedQuery<Student> studentTypedQuery = tem.getEntityManager()
+        TypedQuery<Student> studentTypedQuery = em
                 .createQuery("select s from Student s where s.name=:name", Student.class)
                 .setParameter("name", stName);
 
         Student student = studentTypedQuery.getSingleResult();
         assertThat(student).isNotNull().hasNoNullFieldsOrProperties();
         assertThat(student.getPassport().getNumber()).isEqualTo(expectedNumber);
-
-        tem.flush();
-        tem.clear();
     }
 
     @Test
@@ -53,7 +52,7 @@ class StudentRepositoryTest {
         long studentId = 20001L;
 
         //when
-        Student student = tem.find(Student.class, studentId);
+        Student student = em.find(Student.class, studentId);
 
         //then
         assertThat(student.getPassport())
