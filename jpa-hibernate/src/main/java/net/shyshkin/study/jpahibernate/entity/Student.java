@@ -15,12 +15,12 @@ public class Student {
     @Getter
     private Long id;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     @Column(name = "name", nullable = false)
     private String name;
 
     @OneToOne
+    @Getter @Setter
     private Passport passport;
 
     public Student(String name) {
