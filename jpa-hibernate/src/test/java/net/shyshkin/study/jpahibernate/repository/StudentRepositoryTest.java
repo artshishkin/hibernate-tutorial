@@ -1,6 +1,7 @@
 package net.shyshkin.study.jpahibernate.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.jpahibernate.entity.Passport;
 import net.shyshkin.study.jpahibernate.entity.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 
@@ -57,6 +59,22 @@ class StudentRepositoryTest {
 
         //then
         assertThat(student.getPassport())
+                .isNotNull()
+                .hasNoNullFieldsOrProperties();
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Bidirectional OneToOne relationship with Lazy fetch")
+    void retrievePassportAndAssociatedStudent() {
+        //given
+        long passportId = 30001L;
+
+        //when
+        Passport passport = tem.find(Passport.class, passportId);
+
+        //then
+        assertThat(passport.getStudent())
                 .isNotNull()
                 .hasNoNullFieldsOrProperties();
     }
