@@ -20,6 +20,10 @@ public class Passport {
     @Column( nullable = false)
     private String number;
 
+    @Getter @Setter
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "passport")
+    private Student student;
+
     public Passport(String number) {
         this.number = number;
     }
