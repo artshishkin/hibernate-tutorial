@@ -77,4 +77,18 @@ class CourseTest {
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
+
+    @Test
+    void getReviewsOfCourse() {
+        //given
+        Long courseId = 10001L;
+
+        //when
+        Course course = entityManager.find(Course.class, courseId);
+
+        //then
+        assertThat(course.getReviews())
+                .hasSize(2)
+                .allSatisfy(review -> assertThat(review.getRating()).isNotEmpty());
+    }
 }

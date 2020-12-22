@@ -17,12 +17,12 @@ values (20002, 'Kate',30002);
 insert into student (id, name, passport_id)
 values (20003, 'Arina',30003);
 
-insert into review (id, description, rating)
-values (40001, 'Good','80');
-insert into review (id, description, rating)
-values (40002, null,'90');
-insert into review (id, description, rating)
-values (40003, 'Bad','20');
+insert into review (id, description, rating, course_id)
+values (40001, 'Good','80',10001);
+insert into review (id, description, rating, course_id)
+values (40002, null,'90',10001);
+insert into review (id, description, rating, course_id)
+values (40003, 'Bad','20',10002);
 
 
 

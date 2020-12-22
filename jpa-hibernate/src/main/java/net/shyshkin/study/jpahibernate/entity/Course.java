@@ -6,6 +6,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.unmodifiableList;
 
 @Entity
 @Table(name = "Course")
@@ -25,6 +29,22 @@ public class Course {
     @Setter
     @Column(name = "name", nullable = false)
     private String name;
+
+    @OneToMany
+    @JoinColumn(name = "course_id")
+    private List<Review> reviews = new ArrayList<>();
+
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
+    }
+
+    public List<Review> getReviews() {
+        return unmodifiableList(reviews);
+    }
 
     @Getter
     @CreationTimestamp
