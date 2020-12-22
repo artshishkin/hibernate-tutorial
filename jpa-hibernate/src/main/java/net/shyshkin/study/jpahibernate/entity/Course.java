@@ -30,9 +30,9 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "course_id")
-    private List<Review> reviews = new ArrayList<>();
+    @ToString.Exclude
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private final List<Review> reviews = new ArrayList<>();
 
     public void addReview(Review review) {
         reviews.add(review);

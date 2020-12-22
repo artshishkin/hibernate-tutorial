@@ -24,6 +24,11 @@ public class Review {
     @Column(nullable = false)
     private String rating;
 
+    @Getter
+    @Setter
+    @ManyToOne
+    private Course course;
+
     @Builder
     public Review(String description, String rating) {
         this.description = description;
