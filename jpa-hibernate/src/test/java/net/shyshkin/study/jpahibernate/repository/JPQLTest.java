@@ -31,7 +31,7 @@ class JPQLTest {
 
 
         //then
-        assertThat(courses).hasSize(2)
+        assertThat(courses).hasSize(3)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
@@ -46,7 +46,7 @@ class JPQLTest {
 
         //then
         assertThat(courses)
-                .hasSize(2)
+                .hasSize(3)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
@@ -77,7 +77,7 @@ class JPQLTest {
         int noOfROwsUpdated = query.executeUpdate();
 
         //then
-        assertThat(noOfROwsUpdated).isEqualTo(2);
+        assertThat(noOfROwsUpdated).isEqualTo(3);
     }
 
     private void syncDB() {
