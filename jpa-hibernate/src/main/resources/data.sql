@@ -25,6 +25,8 @@ insert into review (id, description, rating, course_id)
 values (40002, null,'90',10001);
 insert into review (id, description, rating, course_id)
 values (40003, 'Bad','20',10002);
+insert into review (id, description, rating, course_id)
+values (40004, 'Awesome','100',10003);
 
 
 
