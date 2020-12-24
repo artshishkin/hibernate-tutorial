@@ -11,3 +11,13 @@ a JPQL or Criteria API query defines an explicit plan that Hibernate cannot chan
 So, you need to do it manually.
 
 -  `JOIN FETCH` rules
+
+#####  92. Step 38 - ManyToMany Mapping - Insert Data and Write Join Query
+
+```sql
+SELECT * FROM COURSE, STUDENT_COURSE, STUDENT WHERE COURSE_ID = COURSE.ID AND STUDENT_ID = STUDENT.ID;
+```
+
+```sql
+SELECT * FROM COURSE JOIN STUDENT_COURSE JOIN STUDENT ON COURSE_ID = COURSE.ID AND STUDENT_ID = STUDENT.ID;
+```
