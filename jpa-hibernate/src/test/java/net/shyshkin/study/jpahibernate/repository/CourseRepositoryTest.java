@@ -1,6 +1,8 @@
 package net.shyshkin.study.jpahibernate.repository;
 
 import net.shyshkin.study.jpahibernate.entity.Course;
+import net.shyshkin.study.jpahibernate.entity.Review;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -133,5 +138,24 @@ class CourseRepositoryTest {
         TypedQuery<Long> typedQuery = entityManager.createQuery("select count(c) from Course c where c.name = '" + name + "'", Long.class);
 
         return typedQuery.getSingleResult();
+    }
+
+    @Test
+    void addReviewsForCourse() {
+        //given
+        Long courseId = 10003L;
+        List<Review> reviews = Stream.of("39.6", "29.6")
+                .map(rating -> Review.builder().rating(rating).build())
+                .collect(Collectors.toList());
+
+        //when
+        courseRepository.addReviewsForCourse(courseId, reviews);
+
+        //then
+        syncDB();
+        Course course = courseRepository.findById(courseId);
+        assertThat(course.getReviews())
+                .haveAtLeastOne(new Condition<>(review -> "39.6".equals(review.getRating()), null))
+                .haveAtLeastOne(new Condition<>(review -> "29.6".equals(review.getRating()), null));
     }
 }

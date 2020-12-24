@@ -35,6 +35,7 @@ public class Course {
     private final List<Review> reviews = new ArrayList<>();
 
     public void addReview(Review review) {
+        review.setCourse(this);
         reviews.add(review);
     }
 

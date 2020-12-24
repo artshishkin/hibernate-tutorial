@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Collection;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class CourseRepository {
     }
 
     @Transactional
-    public void playWithEntityManagerDetach(){
+    public void playWithEntityManagerDetach() {
         Course course1 = new Course("Play course 1");
         em.persist(course1);
         Course course2 = new Course("Play course 2");
@@ -51,7 +52,7 @@ public class CourseRepository {
     }
 
     @Transactional
-    public void playWithEntityManagerClear(){
+    public void playWithEntityManagerClear() {
         Course course1 = new Course("Play course 1");
         em.persist(course1);
         Course course2 = new Course("Play course 2");
@@ -66,7 +67,7 @@ public class CourseRepository {
     }
 
     @Transactional
-    public void playWithEntityManagerRefresh(){
+    public void playWithEntityManagerRefresh() {
         Course course1 = new Course("Play course 1");
         em.persist(course1);
         Course course2 = new Course("Play course 2");
@@ -88,15 +89,22 @@ public class CourseRepository {
 
         //add 2 reviews for it
         Review review1 = new Review("Bad course", "20");
-        review1.setCourse(course);
         course.addReview(review1);
 
-        Review review2 =  new Review("Somehow course", "40");
-        review2.setCourse(course);
+        Review review2 = new Review("Somehow course", "40");
         course.addReview(review2);
 
         //save it to the database
         em.persist(review1);
         em.persist(review2);
+    }
+
+    @Transactional
+    public void addReviewsForCourse(Long courseId, Collection<Review> reviews) {
+
+        Course course = findById(courseId);
+        reviews.stream()
+                .peek(course::addReview)
+                .forEach(em::persist);
     }
 }
