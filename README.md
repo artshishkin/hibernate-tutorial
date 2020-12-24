@@ -21,3 +21,8 @@ SELECT * FROM COURSE, STUDENT_COURSE, STUDENT WHERE COURSE_ID = COURSE.ID AND ST
 ```sql
 SELECT * FROM COURSE JOIN STUDENT_COURSE JOIN STUDENT ON COURSE_ID = COURSE.ID AND STUDENT_ID = STUDENT.ID;
 ```
+
+#####  Generate SQL from Metadata
+
+-  [Standardized schema generation and data loading with JPA 2.1](https://thorben-janssen.com/standardized-schema-generation-data-loading-jpa-2-1/)
+-  [Generate Database Schema with Spring Data JPA](https://www.baeldung.com/spring-data-jpa-generate-db-schema)

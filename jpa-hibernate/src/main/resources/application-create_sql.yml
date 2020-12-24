@@ -1,0 +1,4 @@
+spring.jpa.properties:
+  javax.persistence.schema-generation.scripts.action: create
+  javax.persistence.schema-generation.scripts.create-target: create_sql/create.sql
+  javax.persistence.schema-generation.scripts.create-source: metadata
