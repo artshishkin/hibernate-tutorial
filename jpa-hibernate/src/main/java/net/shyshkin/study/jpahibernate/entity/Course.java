@@ -47,6 +47,22 @@ public class Course {
         return unmodifiableList(reviews);
     }
 
+    @ManyToMany
+    private final List<Student> students = new ArrayList<>();
+
+    public List<Student> getStudents() {
+        return unmodifiableList(students);
+    }
+
+    public Course addStudent(Student student) {
+        students.add(student);
+        return this;
+    }
+
+    public void removeStudent(Student student){
+        students.remove(student);
+    }
+
     @Getter
     @CreationTimestamp
     private LocalDateTime createdDate;
