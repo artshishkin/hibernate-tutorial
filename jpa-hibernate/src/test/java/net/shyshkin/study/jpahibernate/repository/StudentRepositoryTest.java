@@ -1,6 +1,7 @@
 package net.shyshkin.study.jpahibernate.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.jpahibernate.entity.Course;
 import net.shyshkin.study.jpahibernate.entity.Passport;
 import net.shyshkin.study.jpahibernate.entity.Student;
 import org.junit.jupiter.api.DisplayName;
@@ -77,5 +78,33 @@ class StudentRepositoryTest {
         assertThat(passport.getStudent())
                 .isNotNull()
                 .hasNoNullFieldsOrProperties();
+    }
+
+    @Test
+    void retrieveStudentWithCourses() {
+        //given
+        Long studentId = 20001L;
+
+        //when
+        Student student = studentRepository.findById(studentId);
+
+        //then
+        assertThat(student.getCourses())
+                .hasSize(3)
+                .allSatisfy(course -> assertThat(course.getName()).isNotEmpty());
+    }
+
+    @Test
+    void retrieveCourseWithStudents() {
+        //given
+        Long courseId = 10001L;
+
+        //when
+        Course course = tem.find(Course.class, courseId);
+
+        //then
+        assertThat(course.getStudents())
+                .hasSize(2)
+                .allSatisfy(student -> assertThat(student.getName()).isNotEmpty());
     }
 }
