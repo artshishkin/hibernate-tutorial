@@ -158,4 +158,27 @@ class CourseRepositoryTest {
                 .haveAtLeastOne(new Condition<>(review -> "39.6".equals(review.getRating()), null))
                 .haveAtLeastOne(new Condition<>(review -> "29.6".equals(review.getRating()), null));
     }
+
+    @Test
+    void retrieveReviewsForCourse() {
+        //when
+        Course course = courseRepository.findById(10003L);
+
+        //then
+        assertThat(course.getReviews()).hasSize(1);
+    }
+
+    @Test
+    void retrieveCourseForReview() {
+        //given
+        Long reviewId = 40001L;
+
+        //when
+        Review review = testEntityManager.find(Review.class, reviewId);
+
+        //then
+        assertThat(review.getCourse().getName()).isEqualTo("Spring Boot");
+    }
+
+
 }

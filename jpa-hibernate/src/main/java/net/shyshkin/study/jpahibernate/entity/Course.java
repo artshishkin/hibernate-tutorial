@@ -31,7 +31,7 @@ public class Course {
     private String name;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "course", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.REMOVE}/*,fetch = FetchType.EAGER*/)
     private final List<Review> reviews = new ArrayList<>();
 
     public void addReview(Review review) {
