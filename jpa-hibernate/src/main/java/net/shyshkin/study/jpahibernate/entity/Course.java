@@ -47,7 +47,7 @@ public class Course {
         return unmodifiableList(reviews);
     }
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "courses")
     private final List<Student> students = new ArrayList<>();
 
     public List<Student> getStudents() {
