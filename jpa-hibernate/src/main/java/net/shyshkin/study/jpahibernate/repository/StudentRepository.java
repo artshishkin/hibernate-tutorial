@@ -1,6 +1,7 @@
 package net.shyshkin.study.jpahibernate.repository;
 
 import lombok.RequiredArgsConstructor;
+import net.shyshkin.study.jpahibernate.entity.Course;
 import net.shyshkin.study.jpahibernate.entity.Passport;
 import net.shyshkin.study.jpahibernate.entity.Student;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,7 @@ public class StudentRepository {
     }
 
     @Transactional
-    public void someOperationToUnderstandPersistenceContext(){
+    public void someOperationToUnderstandPersistenceContext() {
         Student student = em.find(Student.class, 20001L);
         //Persistence context (student)
 
@@ -58,5 +59,25 @@ public class StudentRepository {
 
         student.setName("Buzz Bar");
         //Persistence context (student++, passport++)
+    }
+
+    @Transactional
+    public void insertHardcodedStudentAndCourse() {
+        Student student = new Student("JackDocker");
+        Course course = new Course("Docker");
+        student.addCourse(course);
+        course.addStudent(student);
+
+        em.persist(student);
+        em.persist(course);
+    }
+
+    @Transactional
+    public void insertStudentAndCourse(Student student, Course course) {
+        student.addCourse(course);
+        course.addStudent(student);
+
+        em.persist(student);
+        em.persist(course);
     }
 }

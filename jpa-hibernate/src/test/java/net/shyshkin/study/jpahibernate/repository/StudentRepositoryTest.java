@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,8 +46,7 @@ class StudentRepositoryTest {
         assertThat(student).isNotNull().hasNoNullFieldsOrProperties();
         assertThat(student.getPassport().getNumber()).isEqualTo(expectedNumber);
 
-        tem.flush();
-        tem.clear();
+        syncDB();
     }
 
     @Test
@@ -107,4 +107,54 @@ class StudentRepositoryTest {
                 .hasSize(2)
                 .allSatisfy(student -> assertThat(student.getName()).isNotEmpty());
     }
+
+    @Test
+    void insertHardcodedStudentAndCourse() {
+        //given
+        EntityManager em = tem.getEntityManager();
+
+        //when
+        studentRepository.insertHardcodedStudentAndCourse();
+
+        //then
+        TypedQuery<Student> findStudentByName = em
+                .createNamedQuery("findStudentByName", Student.class)
+                .setParameter("name", "JackDocker");
+
+        syncDB();
+
+        Student student = findStudentByName.getSingleResult();
+        assertThat(student.getCourses())
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getName()).isEqualTo("Docker"));
+    }
+
+    @Test
+    void insertStudentAndCourse() {
+        //given
+        EntityManager em = tem.getEntityManager();
+        Student studentToSave = new Student("JackDocker");
+        Course courseToSave = new Course("Docker");
+
+        //when
+        studentRepository.insertStudentAndCourse(studentToSave, courseToSave);
+
+        //then
+        TypedQuery<Student> findStudentByName = em
+                .createNamedQuery("findStudentByName", Student.class)
+                .setParameter("name", "JackDocker");
+
+        syncDB();
+
+        Student student = findStudentByName.getSingleResult();
+        assertThat(student.getCourses())
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getName()).isEqualTo("Docker"));
+    }
+
+    private void syncDB() {
+        tem.flush();
+        tem.clear();
+    }
+
 }

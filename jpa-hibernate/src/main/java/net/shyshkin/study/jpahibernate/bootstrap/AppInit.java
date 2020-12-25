@@ -19,7 +19,6 @@ public class AppInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        studentRepository.createStudentWithPassport();
-        courseRepository.addReviewsForCourse();
+        studentRepository.insertHardcodedStudentAndCourse();
     }
 }

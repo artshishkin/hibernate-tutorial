@@ -12,6 +12,7 @@ import static java.util.Collections.unmodifiableList;
 @Table
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NamedQuery(name = "findStudentByName", query = "select s from Student s where s.name=:name")
 public class Student {
 
     @Id
