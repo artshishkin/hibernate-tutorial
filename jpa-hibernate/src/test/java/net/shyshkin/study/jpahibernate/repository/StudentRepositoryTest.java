@@ -152,6 +152,21 @@ class StudentRepositoryTest {
                 .allSatisfy(course -> assertThat(course.getName()).isEqualTo("Docker"));
     }
 
+    @Test
+    @DisplayName("Deletion owning side of ManyToMany relationship will automatically delete record in JoinTable STUDENT_COURSE")
+    void deleteById() {
+        //given
+        long studentId = 20001L;
+        assertThat(studentRepository.findById(studentId)).isNotNull();
+
+        //when
+        studentRepository.deleteById(studentId);
+
+        //then
+        syncDB();
+        assertThat(studentRepository.findById(studentId)).isNull();
+    }
+
     private void syncDB() {
         tem.flush();
         tem.clear();

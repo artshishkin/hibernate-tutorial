@@ -47,6 +47,7 @@ public class Course {
         return unmodifiableList(reviews);
     }
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "courses")
     private final List<Student> students = new ArrayList<>();
 
@@ -75,4 +76,11 @@ public class Course {
     public Course(String name) {
         this.name = name;
     }
+
+    @PreRemove
+    public void removeCourseFromStudents(){
+        this.students
+                .forEach(student -> student.removeCourse(this));
+    }
+
 }
