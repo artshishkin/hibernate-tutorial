@@ -6,7 +6,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -17,11 +20,13 @@ import static java.util.Collections.unmodifiableList;
 @NamedQueries({
         @NamedQuery(name = "query_all_courses", query = "select c from Course c"),
         @NamedQuery(name = "query_courses_like_hiberNATE", query = "select c from Course c where c.name like :namePart")})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Course {
 
     @Id
     @GeneratedValue
     @Getter
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Getter
@@ -47,7 +52,11 @@ public class Course {
     }
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany
+    @JoinTable(name = "STUDENT_COURSE",
+            joinColumns = @JoinColumn(name = "COURSE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID")
+    )
     private final Set<Student> students = new HashSet<>();
 
     public Set<Student> getStudents() {
@@ -77,15 +86,6 @@ public class Course {
 
     public Course(String name) {
         this.name = name;
-    }
-
-    @PreRemove
-    public void removeCourseFromStudents() {
-        LinkedList<Student> studentQueue = new LinkedList<>(students);
-
-        Student studentToDelete;
-        while ((studentToDelete = studentQueue.pollFirst()) != null)
-            studentToDelete.removeCourse(this);
     }
 
 }

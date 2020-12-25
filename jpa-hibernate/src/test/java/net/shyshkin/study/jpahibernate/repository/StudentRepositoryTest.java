@@ -153,11 +153,11 @@ class StudentRepositoryTest {
     }
 
     @Test
-    @DisplayName("Deletion owning side of ManyToMany relationship will automatically delete record in JoinTable STUDENT_COURSE")
+    @DisplayName("Deletion NON-owning side of ManyToMany relationship requires additional actions to delete record in JoinTable STUDENT_COURSE")
     void deleteById() {
         //given
         long studentId = 20001L;
-        assertThat(studentRepository.findById(studentId)).isNotNull();
+//        assertThat(studentRepository.findById(studentId)).isNotNull();
 
         //when
         studentRepository.deleteById(studentId);

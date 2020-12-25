@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 @Entity
@@ -11,11 +12,13 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedQuery(name = "findStudentByName", query = "select s from Student s where s.name=:name")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Student {
 
     @Id
     @GeneratedValue
     @Getter
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Getter
@@ -32,10 +35,8 @@ public class Student {
         this.name = name;
     }
 
-    @ManyToMany
-    @JoinTable(name = "STUDENT_COURSE",
-            joinColumns = @JoinColumn(name = "STUDENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "students")
     private final Set<Course> courses = new HashSet<>();
 
     public Set<Course> getCourses() {
@@ -52,5 +53,14 @@ public class Student {
     public void removeCourse(Course course) {
         courses.remove(course);
         course.getStudents().remove(this);
+    }
+
+    @PreRemove
+    private void removeStudentFromCourses() {
+        LinkedList<Course> courseQueue = new LinkedList<>(courses);
+
+        Course courseToDelete;
+        while ((courseToDelete = courseQueue.pollFirst()) != null)
+            courseToDelete.removeStudent(this);
     }
 }
