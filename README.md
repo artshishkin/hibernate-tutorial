@@ -26,3 +26,12 @@ SELECT * FROM COURSE JOIN STUDENT_COURSE JOIN STUDENT ON COURSE_ID = COURSE.ID A
 
 -  [Standardized schema generation and data loading with JPA 2.1](https://thorben-janssen.com/standardized-schema-generation-data-loading-jpa-2-1/)
 -  [Generate Database Schema with Spring Data JPA](https://www.baeldung.com/spring-data-jpa-generate-db-schema)
+
+#####  Delete ManyToMany Association
+
+[Hibernate Tip: Best way to remove entities from a many-to-many association](https://www.youtube.com/watch?v=vYNdjtf7iAQ&feature=emb_logo)
+
+1.  Use a Set instead of a List
+2.  Don't Use CascadeType.REMOVE
+3.  Provide utility method for bidirectional associations
+4.  Cleanup association when removing a referencing entity  

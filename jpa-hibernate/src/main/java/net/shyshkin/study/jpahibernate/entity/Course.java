@@ -6,8 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -49,19 +48,22 @@ public class Course {
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "courses")
-    private final List<Student> students = new ArrayList<>();
+    private final Set<Student> students = new HashSet<>();
 
-    public List<Student> getStudents() {
-        return unmodifiableList(students);
+    public Set<Student> getStudents() {
+        return students;
+//        return unmodifiableSet(students);
     }
 
     public Course addStudent(Student student) {
         students.add(student);
+        student.getCourses().add(this);
         return this;
     }
 
-    public void removeStudent(Student student){
+    public void removeStudent(Student student) {
         students.remove(student);
+        student.getCourses().remove(this);
     }
 
     @Getter
@@ -78,9 +80,12 @@ public class Course {
     }
 
     @PreRemove
-    public void removeCourseFromStudents(){
-        this.students
-                .forEach(student -> student.removeCourse(this));
+    public void removeCourseFromStudents() {
+        LinkedList<Student> studentQueue = new LinkedList<>(students);
+
+        Student studentToDelete;
+        while ((studentToDelete = studentQueue.pollFirst()) != null)
+            studentToDelete.removeCourse(this);
     }
 
 }

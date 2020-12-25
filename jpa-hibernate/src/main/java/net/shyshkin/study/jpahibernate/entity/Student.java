@@ -3,10 +3,8 @@ package net.shyshkin.study.jpahibernate.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Collections.unmodifiableList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -38,18 +36,21 @@ public class Student {
     @JoinTable(name = "STUDENT_COURSE",
             joinColumns = @JoinColumn(name = "STUDENT_ID"),
             inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
-    private final List<Course> courses = new ArrayList<>();
+    private final Set<Course> courses = new HashSet<>();
 
-    public List<Course> getCourses() {
-        return unmodifiableList(courses);
+    public Set<Course> getCourses() {
+        return courses;
+//        return unmodifiableSet(courses);
     }
 
     public Student addCourse(Course course) {
         courses.add(course);
+        course.getStudents().add(this);
         return this;
     }
 
     public void removeCourse(Course course) {
         courses.remove(course);
+        course.getStudents().remove(this);
     }
 }

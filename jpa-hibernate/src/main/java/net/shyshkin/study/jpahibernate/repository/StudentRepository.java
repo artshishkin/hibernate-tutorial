@@ -65,7 +65,7 @@ public class StudentRepository {
     public void insertHardcodedStudentAndCourse() {
         Student student = new Student("JackDocker");
         Course course = new Course("Docker");
-        student.addCourse(course);
+//        student.addCourse(course);
         course.addStudent(student);
 
         em.persist(student);
@@ -75,7 +75,7 @@ public class StudentRepository {
     @Transactional
     public void insertStudentAndCourse(Student student, Course course) {
         student.addCourse(course);
-        course.addStudent(student);
+//        course.addStudent(student);
 
         em.persist(student);
         em.persist(course);
