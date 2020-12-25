@@ -22,6 +22,16 @@ public class StudentRepository {
     @Transactional
     public void deleteById(Long id) {
         Student student = findById(id);
+        student.removeStudentFromCourses();
+        em.remove(student);
+    }
+
+    @Transactional
+    public void deleteByIdNative(Long id) {
+        int count = em.createNativeQuery("delete from STUDENT_COURSE where STUDENT_ID = :studentId")
+                .setParameter("studentId", id)
+                .executeUpdate();
+        Student student = findById(id);
         em.remove(student);
     }
 

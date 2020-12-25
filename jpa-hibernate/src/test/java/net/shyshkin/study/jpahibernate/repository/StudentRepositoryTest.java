@@ -167,6 +167,21 @@ class StudentRepositoryTest {
         assertThat(studentRepository.findById(studentId)).isNull();
     }
 
+    @Test
+    @DisplayName("Deletion NON-owning side of ManyToMany relationship with Native Query")
+    void deleteByIdNative() {
+        //given
+        long studentId = 20001L;
+//        assertThat(studentRepository.findById(studentId)).isNotNull();
+
+        //when
+        studentRepository.deleteByIdNative(studentId);
+
+        //then
+        syncDB();
+        assertThat(studentRepository.findById(studentId)).isNull();
+    }
+
     private void syncDB() {
         tem.flush();
         tem.clear();

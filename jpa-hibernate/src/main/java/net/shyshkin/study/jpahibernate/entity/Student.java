@@ -55,8 +55,8 @@ public class Student {
         course.getStudents().remove(this);
     }
 
-    @PreRemove
-    private void removeStudentFromCourses() {
+//    @PreRemove
+    public void removeStudentFromCourses() {
         LinkedList<Course> courseQueue = new LinkedList<>(courses);
 
         Course courseToDelete;
