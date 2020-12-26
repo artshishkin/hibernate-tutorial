@@ -97,3 +97,49 @@ select
 from
        part_time_employee parttimeem0_
 ```
+
+#####  101. Step 47 - JPA Inheritance Hierarchies and Mappings - Joined
+
+Advantages
+-  minimum total number of columns
+-  duplications - only id
+
+Disadvantages
+-  more complex queries
+-  insert in child query has 2 sub inserts
+-  select with join
+-  select from 1 table:
+
+```sql
+select
+    parttimeem0_.id as id1_1_,
+    parttimeem0_1_.name as name2_1_,
+    parttimeem0_.hourly_wage as hourly_w1_3_ 
+from
+    part_time_employee parttimeem0_ 
+inner join
+    employee parttimeem0_1_ 
+        on parttimeem0_.id=parttimeem0_1_.id
+```
+-  select all
+
+```sql
+select
+    employee0_.id as id1_1_,
+    employee0_.name as name2_1_,
+    employee0_1_.salary as salary1_2_,
+    employee0_2_.hourly_wage as hourly_w1_3_,
+    case 
+        when employee0_1_.id is not null then 1 
+        when employee0_2_.id is not null then 2 
+        when employee0_.id is not null then 0 
+    end as clazz_ 
+from
+    employee employee0_ 
+left outer join
+    full_time_employee employee0_1_ 
+        on employee0_.id=employee0_1_.id 
+left outer join
+    part_time_employee employee0_2_ 
+        on employee0_.id=employee0_2_.id
+```
