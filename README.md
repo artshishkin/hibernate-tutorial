@@ -34,4 +34,15 @@ SELECT * FROM COURSE JOIN STUDENT_COURSE JOIN STUDENT ON COURSE_ID = COURSE.ID A
 1.  Use a Set instead of a List
 2.  Don't Use CascadeType.REMOVE
 3.  Provide utility method for bidirectional associations
-4.  Cleanup association when removing a referencing entity  
+4.  Cleanup association when removing a referencing entity
+
+#####  99. Step 45 - JPA Inheritance Hierarchies and Mappings - Single Table  
+
+Disadvantages:
+-  TOO many nullable columns
+-  this can lead to possible errors
+-  additional column DTYPE (or choose name by `DiscriminatorColumn`) - data type (`FullTimeEmployee` or `PartTimeEmployee`)
+
+Advantages:
+-  it is a single table
+-  so queries are simpler
