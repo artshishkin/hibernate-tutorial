@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FullTimeEmployee extends Employee {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private BigDecimal salary;
 
     public FullTimeEmployee(String name, BigDecimal salary) {

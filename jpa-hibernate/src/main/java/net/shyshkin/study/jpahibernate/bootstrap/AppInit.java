@@ -2,11 +2,18 @@ package net.shyshkin.study.jpahibernate.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.jpahibernate.entity.Employee;
+import net.shyshkin.study.jpahibernate.entity.FullTimeEmployee;
+import net.shyshkin.study.jpahibernate.entity.PartTimeEmployee;
 import net.shyshkin.study.jpahibernate.repository.CourseRepository;
+import net.shyshkin.study.jpahibernate.repository.EmployeeRepository;
 import net.shyshkin.study.jpahibernate.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -16,9 +23,12 @@ public class AppInit implements CommandLineRunner {
 
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        studentRepository.insertHardcodedStudentAndCourse();
+        Employee art = new PartTimeEmployee("Art Part", BigDecimal.valueOf(12.99));
+        Employee kate = new FullTimeEmployee("Kate Full", BigDecimal.valueOf(999.99));
+        List.of(art, kate).forEach(employeeRepository::insert);
     }
 }
