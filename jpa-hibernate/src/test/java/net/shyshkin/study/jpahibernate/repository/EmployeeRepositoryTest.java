@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -58,10 +59,7 @@ class EmployeeRepositoryTest {
     @Test
     void findAll() {
         //given
-        Employee art = new PartTimeEmployee("Art Part", BigDecimal.valueOf(12.99));
-        Employee kate = new FullTimeEmployee("Kate Full", BigDecimal.valueOf(999.99));
-        tem.persistAndFlush(art);
-        tem.persistAndFlush(kate);
+        initEmployees();
 
         //when
         List<Employee> employees = employeeRepository.findAll();
@@ -69,5 +67,28 @@ class EmployeeRepositoryTest {
         //then
         assertThat(employees)
                 .hasSize(2);
+    }
+
+    @Test
+    void retrieveOnlyPartTime() {
+        //given
+        initEmployees();
+        EntityManager entityManager = tem.getEntityManager();
+
+        //when
+        List<PartTimeEmployee> partTimeEmployeeList = entityManager
+                .createQuery("select e from PartTimeEmployee e", PartTimeEmployee.class)
+                .getResultList();
+
+        //then
+        syncDB();
+        assertThat(partTimeEmployeeList).hasSize(1);
+    }
+
+    private void initEmployees() {
+        Employee art = new PartTimeEmployee("Art Part", BigDecimal.valueOf(12.99));
+        Employee kate = new FullTimeEmployee("Kate Full", BigDecimal.valueOf(999.99));
+        tem.persistAndFlush(art);
+        tem.persistAndFlush(kate);
     }
 }

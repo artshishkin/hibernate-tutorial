@@ -46,3 +46,54 @@ Disadvantages:
 Advantages:
 -  it is a single table
 -  so queries are simpler
+
+#####  100. Step 46 - JPA Inheritance Hierarchies and Mappings - Table Per Class
+
+Advantages:
+-  tables are separate
+-  may have many different non-null fields
+
+Disadvantages:
+-  many columns are **repeated** (id, name, ...)
+-  more complex queries
+-  if we want to query all the Employees (parent) got **COMPLEX** query:
+
+Hibernate: 
+```sql
+select
+    employee0_.id as id1_1_,
+    employee0_.name as name2_1_,
+    employee0_.salary as salary1_2_,
+    employee0_.hourly_wage as hourly_w1_3_,
+    employee0_.clazz_ as clazz_ 
+from
+    ( select
+        id,
+        name,
+        salary,
+        null as hourly_wage,
+        1 as clazz_ 
+    from
+        full_time_employee 
+    union
+    all select
+        id,
+        name,
+        null as salary,
+        hourly_wage,
+        2 as clazz_ 
+    from
+        part_time_employee 
+) employee0_
+```
+
+-  if we want to query all the PartTimeEmployees (child) got **SIMPLE** query:
+
+```sql
+select
+    parttimeem0_.id as id1_1_,
+    parttimeem0_.name as name2_1_,
+    parttimeem0_.hourly_wage as hourly_w1_3_ 
+from
+       part_time_employee parttimeem0_
+```
