@@ -3,6 +3,8 @@ package net.shyshkin.study.jpahibernate.repository;
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.jpahibernate.entity.Course;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,6 +99,41 @@ class JPQLTest {
                 .hasSize(1)
                 .allSatisfy(course -> assertThat(course.getStudents()).isEmpty())
                 .allMatch(course -> course.getName().equals("AWS Developer"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "select c from Course c where c.students.size >= 2",
+            "select c from Course c where size(c.students) >= 2"
+    })
+    void jpql_coursesWithAtLeast2Students(String queryString) {
+        //when
+        TypedQuery<Course> typedQuery = em.createQuery(queryString, Course.class);
+        List<Course> courseList = typedQuery.getResultList();
+
+        //then
+        assertThat(courseList)
+                .hasSize(3)
+                .allSatisfy(course -> assertThat(course.getStudents()).hasSizeGreaterThanOrEqualTo(2));
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "select c from Course c order by c.students.size",
+            "select c from Course c order by size(c.students)"
+    })
+    void jpql_orderCoursesByNumberOfStudents(String queryString) {
+        //when
+        TypedQuery<Course> typedQuery = em.createQuery(queryString, Course.class);
+        List<Course> courseList = typedQuery.getResultList();
+
+        //then
+        assertThat(courseList)
+                .hasSize(4)
+                .isSortedAccordingTo(Comparator.comparing((course) -> course.getStudents().size()));
+
+        courseList.forEach(course -> log.info("Course `{}` with students count: {}", course, course.getStudents().size()));
     }
 
 }

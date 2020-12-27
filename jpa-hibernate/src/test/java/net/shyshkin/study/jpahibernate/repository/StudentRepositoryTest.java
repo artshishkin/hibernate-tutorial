@@ -104,7 +104,7 @@ class StudentRepositoryTest {
 
         //then
         assertThat(course.getStudents())
-                .hasSize(2)
+                .hasSize(3)
                 .allSatisfy(student -> assertThat(student.getName()).isNotEmpty());
     }
 
