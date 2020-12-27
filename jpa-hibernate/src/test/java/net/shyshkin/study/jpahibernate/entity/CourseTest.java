@@ -73,7 +73,7 @@ class CourseTest {
 
         //then
         assertThat(courseList)
-                .hasSize(3)
+                .hasSize(4)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }

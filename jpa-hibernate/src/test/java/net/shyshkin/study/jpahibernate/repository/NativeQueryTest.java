@@ -28,7 +28,7 @@ class NativeQueryTest {
         List courses = query.getResultList();
 
         //then
-        assertThat(courses).hasSize(3)
+        assertThat(courses).hasSize(4)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
@@ -68,7 +68,7 @@ class NativeQueryTest {
         int noOfROwsUpdated = query.executeUpdate();
 
         //then
-        assertThat(noOfROwsUpdated).isEqualTo(3);
+        assertThat(noOfROwsUpdated).isEqualTo(4);
     }
 
     private void syncDB() {

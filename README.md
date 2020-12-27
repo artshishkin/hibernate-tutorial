@@ -143,3 +143,37 @@ left outer join
     part_time_employee employee0_2_ 
         on employee0_.id=employee0_2_.id
 ```
+
+####  Section 10: Queries with Entities using JPQL
+
+#####  104. Step 50 - JPQL - Courses without Students
+
+Native SQL Solution 
+```sql
+SELECT * FROM COURSE 
+WHERE ID NOT IN
+(SELECT DISTINCT COURSE_ID FROM STUDENT_COURSE );
+```
+Hibernate solution
+```jpaql
+select c from Course c where c.students is empty
+```
+Results in SQL
+```sql
+select
+    course0_.id as id1_0_,
+    course0_.created_date as created_2_0_,
+    course0_.last_updated_date as last_upd3_0_,
+    course0_.name as name4_0_ 
+from
+    course course0_ 
+where
+    not (exists (select
+        student2_.id 
+    from
+        student_course students1_,
+        student student2_ 
+    where
+        course0_.id=students1_.course_id 
+        and students1_.student_id=student2_.id))
+```

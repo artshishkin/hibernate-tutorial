@@ -31,7 +31,7 @@ class JPQLTest {
 
 
         //then
-        assertThat(courses).hasSize(3)
+        assertThat(courses).hasSize(4)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
@@ -46,7 +46,7 @@ class JPQLTest {
 
         //then
         assertThat(courses)
-                .hasSize(3)
+                .hasSize(4)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
     }
@@ -77,11 +77,25 @@ class JPQLTest {
         int noOfROwsUpdated = query.executeUpdate();
 
         //then
-        assertThat(noOfROwsUpdated).isEqualTo(3);
+        assertThat(noOfROwsUpdated).isEqualTo(4);
     }
 
     private void syncDB() {
         em.flush();
         em.clear();
     }
+
+    @Test
+    void jpql_coursesWithoutStudents() {
+        //when
+        TypedQuery<Course> typedQuery = em.createQuery("select c from Course c where c.students is empty", Course.class);
+        List<Course> courseList = typedQuery.getResultList();
+
+        //then
+        assertThat(courseList)
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getStudents()).isEmpty())
+                .allMatch(course -> course.getName().equals("AWS Developer"));
+    }
+
 }
