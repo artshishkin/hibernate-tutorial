@@ -2,6 +2,7 @@ package net.shyshkin.study.jpahibernate.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.jpahibernate.entity.Course;
+import net.shyshkin.study.jpahibernate.entity.Student;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -135,5 +136,26 @@ class JPQLTest {
 
         courseList.forEach(course -> log.info("Course `{}` with students count: {}", course, course.getStudents().size()));
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "select s from Student s where s.passport.number like '%1234%'"
+    })
+    void jpql_studentWithPassportLike1234(String queryString) {
+        //when
+        TypedQuery<Student> typedQuery = em.createQuery(queryString, Student.class);
+        List<Student> studentList = typedQuery.getResultList();
+
+        //then
+        assertThat(studentList)
+                .hasSize(2)
+                .allSatisfy(student -> assertThat(student.getPassport().getNumber()).contains("1234"));
+        studentList.forEach(student -> log.info("{}", student));
+    }
+
+    //like
+    //between 100 and 1000
+    //is NULL
+    //upper, lower, trim, length
 
 }

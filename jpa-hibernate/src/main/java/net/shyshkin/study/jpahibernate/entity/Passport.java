@@ -20,6 +20,7 @@ public class Passport {
     @Column( nullable = false)
     private String number;
 
+    @ToString.Exclude
     @Getter @Setter
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "passport")
     private Student student;

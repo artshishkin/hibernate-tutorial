@@ -12,7 +12,7 @@ values (30001, 'a123456');
 insert into passport (id, number)
 values (30002, 'b67890');
 insert into passport (id, number)
-values (30003, 'c321321');
+values (30003, 'c4123421');
 
 insert into student (id, name, passport_id)
 values (20001, 'Art', 30001);
