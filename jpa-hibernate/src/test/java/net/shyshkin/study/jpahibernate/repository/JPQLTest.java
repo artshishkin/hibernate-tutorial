@@ -210,4 +210,22 @@ class JPQLTest {
                 .allMatch(array -> array[1] == null || array[0].getClass().isAssignableFrom(Course.class))
                 .allMatch(array -> array[1] == null || array[1].getClass().isAssignableFrom(Student.class));
     }
+
+    @Test
+    @DisplayName("Choose Courses with Students who have Passport with numbers like 1234")
+    void complex_join_query() {
+       //when
+        TypedQuery<Course> typedQuery = em.createQuery("select distinct c from Course c join c.students s where s.passport.number like '%1234%'", Course.class);
+        List<Course> resultList = typedQuery.getResultList();
+
+        //then
+        resultList.forEach(course -> log.info("{}", course));
+        assertThat(resultList)
+                .hasSize(3)
+                .allSatisfy(
+                        course -> assertThat(course.getStudents())
+                                .anySatisfy(
+                                        student -> assertThat(student.getPassport().getNumber())
+                                                .contains("1234")));
+    }
 }

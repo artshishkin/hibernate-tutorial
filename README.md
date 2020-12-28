@@ -199,3 +199,32 @@ from
 join
     student student1_
 ```
+
+#####  
+
+```jpaql
+select distinct c from Course c join c.students s where s.passport.number like '%1234%'
+```
+
+```sql
+select
+    distinct course0_.id as id1_0_,
+    course0_.created_date as created_2_0_,
+    course0_.last_updated_date as last_upd3_0_,
+    course0_.name as name4_0_ 
+from
+    course course0_ 
+inner join
+    student_course students1_ 
+        on course0_.id=students1_.course_id 
+inner join
+    student student2_ 
+        on students1_.student_id=student2_.id cross 
+join
+    passport passport3_ 
+where
+    student2_.passport_id=passport3_.id 
+    and (
+        passport3_.number like '%1234%'
+    )
+```
