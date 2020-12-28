@@ -3,6 +3,7 @@ package net.shyshkin.study.jpahibernate.repository;
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.jpahibernate.entity.Course;
 import net.shyshkin.study.jpahibernate.entity.Student;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -158,4 +159,55 @@ class JPQLTest {
     //is NULL
     //upper, lower, trim, length
 
+
+    @Test
+    @DisplayName("Course join Student will NOT return Rows with Courses without student (INNER JOIN)")
+    void join() {
+        //given
+
+        //when
+        Query query = em.createQuery("select c, s from Course c join c.students s");
+        List<Object[]> resultList = query.getResultList();
+
+        //then
+        assertThat(resultList)
+                .hasSize(7)
+                .allMatch(array -> array[0].getClass().isAssignableFrom(Course.class))
+                .allMatch(array -> array[1].getClass().isAssignableFrom(Student.class));
+    }
+
+    @Test
+    @DisplayName("Course left join Student WILL return Rows with Courses without student (LEFT OUTER JOIN)")
+    void left_outer_join() {
+        //given
+
+        //when
+        Query query = em.createQuery("select c, s from Course c left join c.students s");
+        List<Object[]> resultList = query.getResultList();
+
+        //then
+        assertThat(resultList)
+                .hasSize(8)
+                .allMatch(array -> array[0].getClass().isAssignableFrom(Course.class))
+                .allMatch(array -> array[1] == null || array[1].getClass().isAssignableFrom(Student.class));
+    }
+
+    //CROSS JOIN => select c, s from Course c, Student s
+    //3 and 4 => 3 * 4 = 12 Rows
+
+    @Test
+    @DisplayName("Course cross join Student will return ALL THE COMBINATIONS")
+    void cross_join() {
+        //given
+
+        //when
+        Query query = em.createQuery("select c, s from Course c, Student s");
+        List<Object[]> resultList = query.getResultList();
+
+        //then
+        assertThat(resultList)
+                .hasSize(12)
+                .allMatch(array -> array[1] == null || array[0].getClass().isAssignableFrom(Course.class))
+                .allMatch(array -> array[1] == null || array[1].getClass().isAssignableFrom(Student.class));
+    }
 }

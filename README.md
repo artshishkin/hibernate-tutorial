@@ -177,3 +177,25 @@ where
         course0_.id=students1_.course_id 
         and students1_.student_id=student2_.id))
 ```
+
+#####  107. Step 53 - JPQL - Using Joins
+
+Cross join
+```jpaql
+select c, s from Course c, Student s
+```
+will generate
+```sql
+select
+    course0_.id as id1_0_0_,
+    student1_.id as id1_5_1_,
+    course0_.created_date as created_2_0_0_,
+    course0_.last_updated_date as last_upd3_0_0_,
+    course0_.name as name4_0_0_,
+    student1_.name as name2_5_1_,
+    student1_.passport_id as passport3_5_1_ 
+from
+    course course0_ cross 
+join
+    student student1_
+```
