@@ -90,5 +90,37 @@ class CriteriaQueryTest {
                 .allSatisfy(course -> assertThat(course.getName()).containsIgnoringCase("nate"));
     }
 
+    @Test
+    void findCoursesWithoutStudents() {
+        //given
+        //"select c from Course c where c.students is empty"
+
+        //1. Use Criteria Builder to create a Criteria Query
+        //returning the expected result object
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Course> criteriaQuery = cb.createQuery(Course.class);
+
+        //2. Define roots for tables which are involved in the query
+        Root<Course> courseRoot = criteriaQuery.from(Course.class);
+
+        //3. Define Predicates etc using Criteria Builder
+        Predicate studentsIsEmpty = cb.isEmpty(courseRoot.get("students"));
+
+        //4. Add Predicates etc to Criteria Query
+        criteriaQuery.where(studentsIsEmpty);
+
+        //5. Build the TypedQuery using the entity manager and criteria query
+        TypedQuery<Course> query = em.createQuery(criteriaQuery.select(courseRoot));
+
+        //when
+        List<Course> courses = query.getResultList();
+
+        //then
+        assertThat(courses)
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getStudents()).isEmpty())
+                .allMatch(course -> course.getName().equals("AWS Developer"));
+    }
+
 
 }
