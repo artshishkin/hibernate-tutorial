@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -55,6 +56,38 @@ class CriteriaQueryTest {
         assertThat(courses).hasSize(4)
                 .allSatisfy(course -> log.info("{}", course))
                 .allSatisfy(course -> assertThat(course).hasNoNullFieldsOrProperties());
+    }
+
+    @Test
+    void findCoursesLikeNATE() {
+        //given
+        //"select c from Course c where c.name like '%nate'" -> Hibernate
+
+        //1. Use Criteria Builder to create a Criteria Query
+        //returning the expected result object
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Course> criteriaQuery = cb.createQuery(Course.class);
+
+        //2. Define roots for tables which are involved in the query
+        Root<Course> courseRoot = criteriaQuery.from(Course.class);
+
+        //3. Define Predicates etc using Criteria Builder
+        Predicate likeNATE = cb.like(courseRoot.get("name"), "%nate");
+
+        //4. Add Predicates etc to Criteria Query
+        criteriaQuery.where(likeNATE);
+
+        //5. Build the TypedQuery using the entity manager and criteria query
+        TypedQuery<Course> query = em.createQuery(criteriaQuery.select(courseRoot));
+
+        //when
+        List<Course> courses = query.getResultList();
+
+        //then
+        assertThat(courses)
+                .hasSize(1)
+                .allSatisfy(course -> log.info("{}", course))
+                .allSatisfy(course -> assertThat(course.getName()).containsIgnoringCase("nate"));
     }
 
 
