@@ -250,6 +250,21 @@ class CourseSpringDataRepositoryTest {
                                                 .contains("1234")));
     }
 
+    @Test
+    void findNativeCoursesWithNamesLike() {
+        //given
+        String namePart = "%nate%";
+
+        //when
+        List<Course> courseList = courseRepository.findNativeCoursesWithNamesLike(namePart);
+
+        //then
+        courseList.forEach(course -> log.info("{}", course));
+        assertThat(courseList)
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getName()).containsIgnoringCase("nate"));
+    }
+
     private void syncDB() {
         testEntityManager.flush();
         testEntityManager.clear();

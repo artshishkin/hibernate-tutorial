@@ -25,4 +25,7 @@ public interface CourseSpringDataRepository extends JpaRepository<Course, Long> 
     @Query("select distinct c from Course c join c.students s where s.passport.number like :numberPattern")
     List<Course> findCoursesThatHaveStudentsWithPassportNumbersLike(String numberPattern);
 
+    @Query(value = "select * from course where name like :namePart", nativeQuery = true)
+    List<Course> findNativeCoursesWithNamesLike(String namePart);
+
 }
