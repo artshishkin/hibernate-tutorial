@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +75,20 @@ class CourseSpringDataRepositoryTest {
 
         //then
         assertThat(courseList).hasSizeGreaterThan(2);
+    }
+
+    @Test
+    void sort() {
+        //given
+        Sort sort = Sort.by(Sort.Direction.DESC, "name").and(Sort.by("createdDate"));
+
+        //when
+        List<Course> courseList = courseRepository.findAll(sort);
+
+        //then
+        assertThat(courseList)
+                .hasSizeGreaterThan(2)
+                .isSortedAccordingTo(Comparator.comparing(Course::getName, Comparator.reverseOrder()));
     }
 
     @Test
