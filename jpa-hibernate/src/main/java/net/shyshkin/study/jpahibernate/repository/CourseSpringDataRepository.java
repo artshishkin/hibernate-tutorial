@@ -28,4 +28,7 @@ public interface CourseSpringDataRepository extends JpaRepository<Course, Long> 
     @Query(value = "select * from course where name like :namePart", nativeQuery = true)
     List<Course> findNativeCoursesWithNamesLike(String namePart);
 
+    @Query(name = "query_courses_like_hiberNATE")
+    List<Course> findCoursesWithNamesLikeUsingNamedQuery(String namePart);
+
 }

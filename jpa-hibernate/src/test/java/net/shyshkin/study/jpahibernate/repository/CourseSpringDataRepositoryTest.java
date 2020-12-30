@@ -265,6 +265,21 @@ class CourseSpringDataRepositoryTest {
                 .allSatisfy(course -> assertThat(course.getName()).containsIgnoringCase("nate"));
     }
 
+    @Test
+    void findCoursesWithNamesLikeUsingNamedQuery() {
+        //given
+        String namePart = "%nate%";
+
+        //when
+        List<Course> courseList = courseRepository.findCoursesWithNamesLikeUsingNamedQuery(namePart);
+
+        //then
+        courseList.forEach(course -> log.info("{}", course));
+        assertThat(courseList)
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getName()).containsIgnoringCase("nate"));
+    }
+
     private void syncDB() {
         testEntityManager.flush();
         testEntityManager.clear();
