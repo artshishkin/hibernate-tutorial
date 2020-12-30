@@ -8,10 +8,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.*;
 
-import java.util.Comparator;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -88,7 +90,7 @@ class CourseSpringDataRepositoryTest {
         //then
         assertThat(courseList)
                 .hasSizeGreaterThan(2)
-                .isSortedAccordingTo(Comparator.comparing(Course::getName, Comparator.reverseOrder()));
+                .isSortedAccordingTo(comparing(Course::getName, reverseOrder()));
     }
 
     @Test
@@ -139,6 +141,74 @@ class CourseSpringDataRepositoryTest {
 
         //then
         assertThat(count).isGreaterThan(2);
+    }
+
+    @Test
+    void findByName() {
+        //given
+        String name = "Kafka";
+
+        //when
+        List<Course> courses = courseRepository.findByName(name);
+
+        //then
+        assertThat(courses)
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getName()).isEqualTo(name));
+    }
+
+    @Test
+    void countByName() {
+        //given
+        String name = "Kafka";
+
+        //when
+        long count = courseRepository.countByName(name);
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    void findByNameContainingAndAndCreatedDateAfter() {
+        //given
+        String namePart = "nate";
+        LocalDateTime startTime = LocalDateTime.now().minusDays(1);
+
+        //when
+        List<Course> courseList = courseRepository.findByNameContainingAndAndCreatedDateAfter(namePart, startTime);
+
+        //then
+        assertThat(courseList)
+                .hasSize(1)
+                .allSatisfy(course -> assertThat(course.getName()).containsIgnoringCase("nate"));
+    }
+
+    @Test
+    void findByNameContainingOrderByNameDesc() {
+        //given
+        String namePart = "r";
+
+        //when
+        List<Course> courseList = courseRepository.findByNameContainingOrderByNameDesc(namePart);
+
+        //then
+        assertThat(courseList)
+                .hasSize(3)
+                .isSortedAccordingTo(comparing(Course::getName, reverseOrder()));
+    }
+
+    @Test
+    void deleteByName() {
+        //given
+        String name = "Kafka";
+        assertThat(courseRepository.countByName(name)).isEqualTo(1);
+
+        //when
+        courseRepository.deleteByName(name);
+
+        //then
+        assertThat(courseRepository.countByName(name)).isEqualTo(0);
     }
 
     private void syncDB() {
