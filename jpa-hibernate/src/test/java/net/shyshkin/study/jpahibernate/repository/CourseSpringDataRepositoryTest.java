@@ -1,5 +1,6 @@
 package net.shyshkin.study.jpahibernate.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.jpahibernate.entity.Course;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static java.util.Comparator.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Slf4j
 @DataJpaTest
 class CourseSpringDataRepositoryTest {
 
@@ -209,6 +211,43 @@ class CourseSpringDataRepositoryTest {
 
         //then
         assertThat(courseRepository.countByName(name)).isEqualTo(0);
+    }
+
+    @Test
+    void findCoursesThatHaveStudentsWithPassportNumbersLike1234() {
+        //given
+
+        //when
+        List<Course> courseList = courseRepository.findCoursesThatHaveStudentsWithPassportNumbersLike1234();
+
+        //then
+        courseList.forEach(course -> log.info("{}", course));
+        assertThat(courseList)
+                .hasSize(3)
+                .allSatisfy(
+                        course -> assertThat(course.getStudents())
+                                .anySatisfy(
+                                        student -> assertThat(student.getPassport().getNumber())
+                                                .contains("1234")));
+    }
+
+    @Test
+    void findCoursesThatHaveStudentsWithPassportNumbersLike() {
+        //given
+        String numberPattern = "%1234%";
+
+        //when
+        List<Course> courseList = courseRepository.findCoursesThatHaveStudentsWithPassportNumbersLike(numberPattern);
+
+        //then
+        courseList.forEach(course -> log.info("{}", course));
+        assertThat(courseList)
+                .hasSize(3)
+                .allSatisfy(
+                        course -> assertThat(course.getStudents())
+                                .anySatisfy(
+                                        student -> assertThat(student.getPassport().getNumber())
+                                                .contains("1234")));
     }
 
     private void syncDB() {
