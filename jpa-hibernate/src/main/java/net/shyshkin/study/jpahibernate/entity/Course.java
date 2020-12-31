@@ -1,5 +1,6 @@
 package net.shyshkin.study.jpahibernate.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -57,6 +58,7 @@ public class Course {
             joinColumns = @JoinColumn(name = "COURSE_ID"),
             inverseJoinColumns = @JoinColumn(name = "STUDENT_ID")
     )
+    @JsonIgnore
     private final Set<Student> students = new HashSet<>();
 
     public Set<Student> getStudents() {
