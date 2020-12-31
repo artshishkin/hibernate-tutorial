@@ -53,7 +53,7 @@ class StudentRepositorySpringBootTest {
     }
 
     @Test
-    @Disabled("When FETCH type set to LAZY this will throw LazyInitializationException")
+//    @Disabled("When FETCH type set to LAZY this will throw LazyInitializationException")
     @DisplayName("OneToOne relationship is EAGER by default")
     void retrieveStudentWithDetails_eager() {
         //given
@@ -69,6 +69,7 @@ class StudentRepositorySpringBootTest {
     }
 
     @Test
+    @Disabled("Now fetch set to EAGER")
     @DisplayName("OneToOne relationship with LAZY fetch will throw LazyInitializationException")
     void retrieveStudentWithDetails_exception() {
         //given
