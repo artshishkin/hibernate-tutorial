@@ -21,6 +21,7 @@ import static java.util.Collections.unmodifiableList;
         @NamedQuery(name = "query_all_courses", query = "select c from Course c"),
         @NamedQuery(name = "query_courses_like_hiberNATE", query = "select c from Course c where c.name like :namePart")})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Cacheable
 public class Course {
 
     @Id
