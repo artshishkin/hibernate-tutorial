@@ -200,7 +200,7 @@ join
     student student1_
 ```
 
-#####  
+#####  Create complex query with Join 
 
 ```jpaql
 select distinct c from Course c join c.students s where s.passport.number like '%1234%'
@@ -228,3 +228,18 @@ where
         passport3_.number like '%1234%'
     )
 ```
+
+####  Section 14: Caching with Hibernate & JPA
+
+#####  128. Step 74 - Hibernate and JPA Caching - Second Level Cache`
+
+-  Session Metrics of Level 2 Cache (L2C)
+    -  first request `/api/courses/10001`
+        -  `3777200 nanoseconds spent performing 1 L2C puts;`
+        -  `0 nanoseconds spent performing 0 L2C hits;`
+        -  `1783700 nanoseconds spent performing 1 L2C misses;`
+    -  second request `/api/courses/10001`
+        -  `0 nanoseconds spent performing 0 L2C puts;`
+        -  `285500 nanoseconds spent performing 1 L2C hits;`
+        -  `0 nanoseconds spent performing 0 L2C misses;`
+
