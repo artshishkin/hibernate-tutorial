@@ -243,3 +243,11 @@ where
         -  `285500 nanoseconds spent performing 1 L2C hits;`
         -  `0 nanoseconds spent performing 0 L2C misses;`
 
+####  Section 15: Hibernate & JPA Tips
+
+#####  130. Step 76 - Hibernate Soft Deletes - Part 2
+
+`@Where(clause = "is_deleted = false")` is not added to Native Queries automatically. We must add it manually if we want to use Soft Delete.
+
+
+ 

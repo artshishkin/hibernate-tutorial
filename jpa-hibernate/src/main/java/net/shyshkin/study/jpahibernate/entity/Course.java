@@ -1,6 +1,7 @@
 package net.shyshkin.study.jpahibernate.entity;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import static java.util.Collections.unmodifiableList;
 
+@Slf4j
 @Entity
 @Table(name = "Course")
 @ToString
@@ -94,6 +96,12 @@ public class Course {
 
     public Course(String name) {
         this.name = name;
+    }
+
+    @PreRemove
+    private void preRemove() {
+        log.info("Setting isDeleted to true");
+        this.isDeleted = true;
     }
 
 }
