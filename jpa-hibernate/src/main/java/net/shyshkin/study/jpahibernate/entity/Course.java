@@ -2,7 +2,9 @@ package net.shyshkin.study.jpahibernate.entity;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +24,8 @@ import static java.util.Collections.unmodifiableList;
         @NamedQuery(name = "query_courses_like_hiberNATE", query = "select c from Course c where c.name like :namePart")})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Cacheable
+@SQLDelete(sql = "update COURSE set is_deleted=true where ID=?")
+@Where(clause = "is_deleted = false")
 public class Course {
 
     @Id
@@ -84,6 +88,9 @@ public class Course {
     @Setter
     @UpdateTimestamp
     private LocalDateTime lastUpdatedDate;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isDeleted;
 
     public Course(String name) {
         this.name = name;
