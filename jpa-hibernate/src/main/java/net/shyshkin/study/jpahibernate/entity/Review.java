@@ -22,7 +22,8 @@ public class Review {
     @Getter
     @Setter
     @Column(nullable = false)
-    private String rating;
+    @Enumerated(value = EnumType.STRING)
+    private Rating rating;
 
     @Getter
     @Setter
@@ -30,7 +31,7 @@ public class Review {
     private Course course;
 
     @Builder
-    public Review(String description, String rating) {
+    public Review(String description, Rating rating) {
         this.description = description;
         this.rating = rating;
     }

@@ -22,13 +22,13 @@ insert into student (id, name, passport_id)
 values (20003, 'Arina',30003);
 
 insert into review (id, description, rating, course_id)
-values (40001, 'Good','80',10001);
+values (40001, 'Good','FOUR',10001);
 insert into review (id, description, rating, course_id)
-values (40002, null,'90',10001);
+values (40002, null,'FIVE',10001);
 insert into review (id, description, rating, course_id)
-values (40003, 'Bad','20',10002);
+values (40003, 'Bad','TWO',10002);
 insert into review (id, description, rating, course_id)
-values (40004, 'Awesome','100',10003);
+values (40004, 'Awesome','FIVE  ',10003);
 
 insert into student_course (student_id, course_id)
 values (20001,10001);

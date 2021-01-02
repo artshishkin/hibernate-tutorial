@@ -89,6 +89,6 @@ class CourseTest {
         //then
         assertThat(course.getReviews())
                 .hasSize(2)
-                .allSatisfy(review -> assertThat(review.getRating()).isNotEmpty());
+                .allSatisfy(review -> assertThat(review.getRating()).isNotNull());
     }
 }

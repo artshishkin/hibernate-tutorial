@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static net.shyshkin.study.jpahibernate.entity.Rating.THREE;
+import static net.shyshkin.study.jpahibernate.entity.Rating.TWO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -145,7 +147,7 @@ class CourseRepositoryTest {
     void addReviewsForCourse() {
         //given
         Long courseId = 10003L;
-        List<Review> reviews = Stream.of("39.6", "29.6")
+        List<Review> reviews = Stream.of(THREE, TWO)
                 .map(rating -> Review.builder().rating(rating).build())
                 .collect(Collectors.toList());
 
@@ -156,8 +158,8 @@ class CourseRepositoryTest {
         syncDB();
         Course course = courseRepository.findById(courseId);
         assertThat(course.getReviews())
-                .haveAtLeastOne(new Condition<>(review -> "39.6".equals(review.getRating()), null))
-                .haveAtLeastOne(new Condition<>(review -> "29.6".equals(review.getRating()), null));
+                .haveAtLeastOne(new Condition<>(review -> THREE.equals(review.getRating()), null))
+                .haveAtLeastOne(new Condition<>(review -> TWO.equals(review.getRating()), null));
     }
 
     @Test

@@ -2,6 +2,7 @@ package net.shyshkin.study.jpahibernate.repository;
 
 import lombok.RequiredArgsConstructor;
 import net.shyshkin.study.jpahibernate.entity.Course;
+import net.shyshkin.study.jpahibernate.entity.Rating;
 import net.shyshkin.study.jpahibernate.entity.Review;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,10 +89,10 @@ public class CourseRepository {
         Course course = findById(10003L);
 
         //add 2 reviews for it
-        Review review1 = new Review("Bad course", "20");
+        Review review1 = new Review("Bad course", Rating.TWO);
         course.addReview(review1);
 
-        Review review2 = new Review("Somehow course", "40");
+        Review review2 = new Review("Somehow course", Rating.THREE);
         course.addReview(review2);
 
         //save it to the database

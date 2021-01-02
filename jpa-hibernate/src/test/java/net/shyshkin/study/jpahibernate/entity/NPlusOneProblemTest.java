@@ -102,12 +102,12 @@ class NPlusOneProblemTest {
             EntityManager em = testEntityManager.getEntityManager();
 
             //when
-            TypedQuery<Review> typedQuery = em.createQuery("select r from Review r where r.rating like '%0'", Review.class);
+            TypedQuery<Review> typedQuery = em.createQuery("select r from Review r where r.description like '%o%'", Review.class);
 
             //then
             List<Review> reviews = typedQuery.getResultList();
             assertThat(reviews)
-                    .hasSize(4)
+                    .hasSize(2)
                     .allSatisfy(review -> assertThat(review.getCourse().getName()).isNotEmpty());
         }
 
@@ -117,12 +117,12 @@ class NPlusOneProblemTest {
             EntityManager em = testEntityManager.getEntityManager();
 
             //when
-            TypedQuery<Review> typedQuery = em.createQuery("select r from Review r join fetch r.course c where r.rating like '%0'", Review.class);
+            TypedQuery<Review> typedQuery = em.createQuery("select r from Review r join fetch r.course c where r.description like '%o%'", Review.class);
 
             //then
             List<Review> reviews = typedQuery.getResultList();
             assertThat(reviews)
-                    .hasSize(4)
+                    .hasSize(2)
                     .allSatisfy(review -> assertThat(review.getCourse().getName()).isNotEmpty());
         }
     }
