@@ -259,4 +259,69 @@ In `javax.persistence.*` we have method annotations
 -  `PrePersist`
 -  `PreRemove`
 -  `PreUpdate`
- 
+
+####  Section 16: Performance Tuning Tips with Hibernate & JPA
+
+#####  140. Step 86 - Performance Tuning - Avoid N+1 Problems
+
+EntityGraph SQL Result
+
+```sql
+select
+    course0_.id as id1_0_0_,
+    student2_.id as id1_5_1_,
+    course0_.created_date as created_2_0_0_,
+    course0_.is_deleted as is_delet3_0_0_,
+    course0_.last_updated_date as last_upd4_0_0_,
+    course0_.name as name5_0_0_,
+    student2_.city as city2_5_1_,
+    student2_.line1 as line3_5_1_,
+    student2_.line2 as line4_5_1_,
+    student2_.name as name5_5_1_,
+    student2_.passport_id as passport6_5_1_,
+    students1_.course_id as course_i1_6_0__,
+    students1_.student_id as student_2_6_0__ 
+from
+    course course0_ 
+left outer join
+    student_course students1_ 
+        on course0_.id=students1_.course_id 
+left outer join
+    student student2_ 
+        on students1_.student_id=student2_.id 
+where
+    (
+        course0_.is_deleted = 0
+    )
+``` 
+
+Left Join Fetch SQL Result
+
+```sql
+select
+    distinct course0_.id as id1_0_0_,
+    student2_.id as id1_5_1_,
+    course0_.created_date as created_2_0_0_,
+    course0_.is_deleted as is_delet3_0_0_,
+    course0_.last_updated_date as last_upd4_0_0_,
+    course0_.name as name5_0_0_,
+    student2_.city as city2_5_1_,
+    student2_.line1 as line3_5_1_,
+    student2_.line2 as line4_5_1_,
+    student2_.name as name5_5_1_,
+    student2_.passport_id as passport6_5_1_,
+    students1_.course_id as course_i1_6_0__,
+    students1_.student_id as student_2_6_0__ 
+from
+    course course0_ 
+left outer join
+    student_course students1_ 
+        on course0_.id=students1_.course_id 
+left outer join
+    student student2_ 
+        on students1_.student_id=student2_.id 
+where
+    (
+        course0_.is_deleted = 0
+    )
+```
