@@ -249,5 +249,14 @@ where
 
 `@Where(clause = "is_deleted = false")` is not added to Native Queries automatically. We must add it manually if we want to use Soft Delete.
 
+#####  131. Step 77 - JPA Entity Life Cycle Methods
 
+In `javax.persistence.*` we have method annotations
+-  `PostLoad`
+-  `PostPersist`
+-  `PostRemove`
+-  `PostUpdate`
+-  `PrePersist`
+-  `PreRemove`
+-  `PreUpdate`
  
