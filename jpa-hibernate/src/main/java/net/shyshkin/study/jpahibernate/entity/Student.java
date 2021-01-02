@@ -55,7 +55,7 @@ public class Student {
         course.getStudents().remove(this);
     }
 
-//    @PreRemove
+    //    @PreRemove
     public void removeStudentFromCourses() {
         LinkedList<Course> courseQueue = new LinkedList<>(courses);
 
@@ -63,4 +63,9 @@ public class Student {
         while ((courseToDelete = courseQueue.pollFirst()) != null)
             courseToDelete.removeStudent(this);
     }
+
+    @Getter
+    @Setter
+    @Embedded
+    private Address address = new Address();
 }

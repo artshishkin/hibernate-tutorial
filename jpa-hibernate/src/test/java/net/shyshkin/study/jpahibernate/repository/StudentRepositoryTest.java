@@ -78,7 +78,7 @@ class StudentRepositoryTest {
         //then
         assertThat(passport.getStudent())
                 .isNotNull()
-                .hasNoNullFieldsOrProperties();
+                .hasNoNullFieldsOrPropertiesExcept("address");
     }
 
     @Test

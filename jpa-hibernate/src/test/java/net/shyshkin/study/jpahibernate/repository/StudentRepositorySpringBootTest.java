@@ -1,6 +1,7 @@
 package net.shyshkin.study.jpahibernate.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.jpahibernate.entity.Address;
 import net.shyshkin.study.jpahibernate.entity.Passport;
 import net.shyshkin.study.jpahibernate.entity.Student;
 import org.hibernate.LazyInitializationException;
@@ -119,5 +120,52 @@ class StudentRepositorySpringBootTest {
         //then
         Student student = em.find(Student.class, id);
         assertThat(student.getName()).isEqualTo("Buzz Bar");
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Setting Student Address trough EntityManager")
+    void setAddressDetails_EntityManager() {
+        //given
+        long studentId = 20002L;
+        Student student = em.find(Student.class, studentId);
+        Address address = new Address("Line 1 Foo", "Line 2 Bar", "City Buzz");
+
+        //when
+        student.setAddress(address);
+
+        //then
+        em.flush();
+        em.clear();
+
+        Student studentUpdated = em.find(Student.class, studentId);
+        assertThat(studentUpdated.getAddress())
+                .isNotNull()
+                .hasNoNullFieldsOrProperties()
+                .hasFieldOrPropertyWithValue("line1", "Line 1 Foo")
+                .hasFieldOrPropertyWithValue("line2", "Line 2 Bar")
+                .hasFieldOrPropertyWithValue("city", "City Buzz");
+    }
+
+    @Test
+    @DisplayName("Setting Student Address trough Repository")
+    void setAddressDetails_Repository() {
+        //given
+        long studentId = 20003L;
+        Student student = studentRepository.findById(studentId);
+        Address address = new Address("Line 1 Foo", "Line 2 Bar", "City Buzz");
+
+        //when
+        student.setAddress(address);
+        studentRepository.save(student);
+
+        //then
+        Student studentUpdated = em.find(Student.class, studentId);
+        assertThat(studentUpdated.getAddress())
+                .isNotNull()
+                .hasNoNullFieldsOrProperties()
+                .hasFieldOrPropertyWithValue("line1", "Line 1 Foo")
+                .hasFieldOrPropertyWithValue("line2", "Line 2 Bar")
+                .hasFieldOrPropertyWithValue("city", "City Buzz");
     }
 }

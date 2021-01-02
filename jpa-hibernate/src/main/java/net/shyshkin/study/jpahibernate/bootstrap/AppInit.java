@@ -2,9 +2,7 @@ package net.shyshkin.study.jpahibernate.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.shyshkin.study.jpahibernate.entity.Employee;
-import net.shyshkin.study.jpahibernate.entity.FullTimeEmployee;
-import net.shyshkin.study.jpahibernate.entity.PartTimeEmployee;
+import net.shyshkin.study.jpahibernate.entity.*;
 import net.shyshkin.study.jpahibernate.repository.CourseRepository;
 import net.shyshkin.study.jpahibernate.repository.EmployeeRepository;
 import net.shyshkin.study.jpahibernate.repository.StudentRepository;
@@ -30,5 +28,9 @@ public class AppInit implements CommandLineRunner {
         Employee art = new PartTimeEmployee("Art Part", BigDecimal.valueOf(12.99));
         Employee kate = new FullTimeEmployee("Kate Full", BigDecimal.valueOf(999.99));
         List.of(art, kate).forEach(employeeRepository::insert);
+
+        Student student = studentRepository.findById(20001L);
+        student.setAddress(new Address("Line 1", "Line 2", "Kyiv"));
+        studentRepository.save(student);
     }
 }
